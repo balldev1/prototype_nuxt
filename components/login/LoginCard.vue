@@ -1,16 +1,3 @@
-<script setup>
-import { ref } from "vue";
-
-const email = ref("");
-const password = ref("");
-
-const emailError = ref(false);
-
-const validate = () => {
-  emailError.value = !email.value;
-};
-</script>
-
 <template>
   <div
     class="flex items-center justify-center min-h-screen bg-gradient-to-b from-neutral-900 to-neutral-950"
@@ -25,8 +12,8 @@ const validate = () => {
         </div>
       </div>
       <div class="mt-6 flex flex-col gap-4">
-        <InlineMessage v-if="emailError" class=""
-          >login fail email or password worng
+        <InlineMessage v-if="emailError || loginErrorMessage" class="">
+          {{ loginErrorMessage || "login fail email or password wrong" }}
         </InlineMessage>
 
         <IconField iconPosition="left w-full ">
@@ -59,3 +46,40 @@ const validate = () => {
     </div>
   </div>
 </template>
+
+<script setup>
+import { ref } from "vue";
+import axios from "axios";
+
+const email = ref("");
+const password = ref("");
+
+const emailError = ref(false);
+const loginErrorMessage = ref("");
+
+const validate = async () => {
+  emailError.value = !email.value;
+  loginErrorMessage.value = "";
+
+  if (!email.value || !password.value) {
+    loginErrorMessage.value = "Please enter email and password";
+    return;
+  }
+
+  try {
+    const response = await axios.post("http://localhost:3000/api/auth/login", {
+      email: email.value,
+      password: password.value,
+    });
+    console.log("response", response);
+    if (response.data.message === "Login successful") {
+      // login ผ่าน ทำอย่างเช่น redirect ไปหน้าอื่น
+      window.location.href = "/"; // หรือ router.push('/') ถ้าใช้ Vue Router
+    } else {
+      loginErrorMessage.value = "Login failed";
+    }
+  } catch (error) {
+    loginErrorMessage.value = error.response?.data?.message || "Login failed";
+  }
+};
+</script>
