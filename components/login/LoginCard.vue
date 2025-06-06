@@ -50,7 +50,6 @@
 
 <script setup>
 import { ref } from "vue";
-import axios from "axios";
 import { login } from "@/lib/auth";
 
 const email = ref("");
