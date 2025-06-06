@@ -1,15 +1,19 @@
 <template>
-  <Button
+  <!-- <Button
     label="Logout"
     icon="pi pi-sign-out"
     class="p-button-danger"
     @click="handleLogout"
-  />
-  <NuxtPage />
+  /> -->
+  <div class="fixed">
+    <SideBarCard />
+    <NuxtPage />
+  </div>
 </template>
 
 <script setup>
 import { logout } from "@/lib/auth";
+import SideBarCard from "~/components/layout/SideBarCard.vue";
 
 const handleLogout = async () => {
   try {
