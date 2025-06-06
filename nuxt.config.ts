@@ -20,8 +20,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     MONGO_URI: process.env.MONGO_URI,
     JWT_SECRET: process.env.JWT_SECRET,
-    public: {
-      apiBase: process.env.API_BASE_URL || "http://localhost:3000",
-    },
+    // public: {
+    //   apiBase: process.env.API_BASE_URL || "http://localhost:3000",
+    // },
   },
 });

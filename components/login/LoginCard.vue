@@ -11,7 +11,7 @@
           security everywhere ? <span class="text-white">login</span>
         </div>
       </div>
-      <div class="mt-6 flex flex-col gap-4">
+      <form @submit.prevent="validate" class="mt-6 flex flex-col gap-4">
         <InlineMessage v-if="emailError || loginErrorMessage" class="">
           {{ loginErrorMessage || "login fail email or password wrong" }}
         </InlineMessage>
@@ -37,12 +37,13 @@
 
         <IconField iconPosition="left ">
           <Button
+            type="submit"
             label="Login"
             @click="validate"
             class="w-full !bg-neutral-600 hover:opacity-90 !text-white !border-none shadow-md shadow-neutral-800"
           />
         </IconField>
-      </div>
+      </form>
     </div>
   </div>
 </template>
@@ -67,14 +68,16 @@ const validate = async () => {
   }
 
   try {
-    const response = await axios.post("http://localhost:3000/api/auth/login", {
-      email: email.value,
-      password: password.value,
-    });
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_BASE_URL}/auth/login`,
+      {
+        email: email.value,
+        password: password.value,
+      }
+    );
     console.log("response", response);
     if (response.data.message === "Login successful") {
-      // login ผ่าน ทำอย่างเช่น redirect ไปหน้าอื่น
-      window.location.href = "/"; // หรือ router.push('/') ถ้าใช้ Vue Router
+      window.location.href = "/";
     } else {
       loginErrorMessage.value = "Login failed";
     }

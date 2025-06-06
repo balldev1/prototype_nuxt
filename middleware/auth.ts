@@ -6,20 +6,18 @@ export default defineNuxtRouteMiddleware(async (to) => {
     const jwtSecret = process.env.JWT_SECRET as string;
 
     if (!token) {
-      return navigateTo("/login");
+      if (to.path !== "/login") return navigateTo("/login");
+      return;
     }
-
+    console.log("test");
     try {
       const jwt = await import("jsonwebtoken");
       jwt.verify(token, jwtSecret);
 
       if (to.path === "/login") return navigateTo("/");
     } catch (error) {
-      return navigateTo("/login");
+      if (to.path !== "/login") return navigateTo("/");
+      return;
     }
-  } else {
-    // client side อาจตรวจสอบแบบอื่นหรือข้ามไป
-    console.log("this client");
-    return;
   }
 });
