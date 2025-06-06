@@ -11,7 +11,7 @@
           security everywhere ? <span class="text-white">login</span>
         </div>
       </div>
-      <form @submit.prevent="validate" class="mt-6 flex flex-col gap-4">
+      <form @submit.prevent="handleLogin" class="mt-6 flex flex-col gap-4">
         <InlineMessage v-if="emailError || loginErrorMessage" class="">
           {{ loginErrorMessage || "login fail email or password wrong" }}
         </InlineMessage>
@@ -38,7 +38,7 @@
         <IconField iconPosition="left ">
           <Button
             type="submit"
-            label="Login"
+            label="login"
             @click="validate"
             class="w-full !bg-neutral-600 hover:opacity-90 !text-white !border-none shadow-md shadow-neutral-800"
           />
@@ -51,6 +51,7 @@
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
+import { login } from "@/lib/auth";
 
 const email = ref("");
 const password = ref("");
@@ -58,31 +59,15 @@ const password = ref("");
 const emailError = ref(false);
 const loginErrorMessage = ref("");
 
-const validate = async () => {
+const handleLogin = async () => {
   emailError.value = !email.value;
   loginErrorMessage.value = "";
 
-  if (!email.value || !password.value) {
-    loginErrorMessage.value = "Please enter email and password";
-    return;
-  }
-
   try {
-    const response = await axios.post(
-      `${import.meta.env.VITE_API_BASE_URL}/auth/login`,
-      {
-        email: email.value,
-        password: password.value,
-      }
-    );
-    console.log("response", response);
-    if (response.data.message === "Login successful") {
-      window.location.href = "/";
-    } else {
-      loginErrorMessage.value = "Login failed";
-    }
+    await login(email.value, password.value);
+    window.location.href = "/";
   } catch (error) {
-    loginErrorMessage.value = error.response?.data?.message || "Login failed";
+    loginErrorMessage.value = error.message || "Login failed";
   }
 };
 </script>
