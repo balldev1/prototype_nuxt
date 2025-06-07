@@ -1,9 +1,13 @@
 <template>
   <div class="bg-neutral-900 shadow-sm rounded-md h-[36rem] flex">
     <div class="flex w-full">
-      <img src="/dashboard_bg.webp" alt="Dashboard Background" />
+      <img
+        src="/dashboard_bg.webp"
+        alt="Dashboard Background"
+        class="scale-80"
+      />
     </div>
-    <div class="flex flex-col gap-3 w-full">
+    <div class="flex flex-col gap-3 w-full pt-10 pr-10">
       <h2 class="text-4xl flex">Repair Notification and Maintenance</h2>
       <h2 class="border-[1px]" />
       <h2 class="text-balance">

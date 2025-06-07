@@ -4,6 +4,12 @@ import { User } from "../models/User";
 import { connectToDatabase } from "../utils/mongo";
 import { H3Event, setCookie } from "h3";
 
+export const getAllUsers = async () => {
+  await connectToDatabase();
+
+  return await User.find({}, { password: 0 });
+};
+
 export const registerUser = async (
   email: string,
   password: string,
@@ -11,7 +17,8 @@ export const registerUser = async (
   lastname: string,
   address: string,
   phone: string,
-  role: string
+  role: string,
+  createBy: string
 ) => {
   await connectToDatabase();
 
@@ -27,6 +34,7 @@ export const registerUser = async (
     address,
     phone,
     role,
+    createBy,
   });
 
   return { message: "User registered", id: user._id };
@@ -53,6 +61,7 @@ export const loginUser = async (
       address: user.address,
       phone: user.phone,
       role: user.role,
+      createBy: user.createBy,
     },
     useRuntimeConfig().JWT_SECRET,
     {
@@ -81,3 +90,37 @@ export const logoutUser = (event: H3Event) => {
 
   return { message: "Logout successful" };
 };
+
+export async function deleteUser(id: string) {
+  try {
+    await connectToDatabase();
+    const deleted = await User.findByIdAndDelete(id);
+    if (!deleted) {
+      return { error: "User not found" };
+    }
+    return { message: "User deleted successfully" };
+  } catch (error) {
+    return { error: "Unable to delete user" };
+  }
+}
+
+export async function updateUser(id: string, data: Partial<any>) {
+  try {
+    await connectToDatabase();
+
+    if (data.password) {
+      data.password = await bcrypt.hash(data.password, 10);
+    }
+
+    const updated = await User.findByIdAndUpdate(id, data, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!updated) return { error: "User not found" };
+
+    return { message: "User updated", user: updated };
+  } catch (error) {
+    return { error: "Unable to update user" };
+  }
+}

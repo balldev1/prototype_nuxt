@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative bg-neutral-900 min-h-screen p-2 shadow overflow-hidden transition-all ease-in-out duration-300"
+    class="bg-neutral-900 min-h-screen p-2 px-5 shadow transition-all ease-in-out duration-300"
     :class="sidebar ? 'w-60' : ''"
   >
     <div class="flex flex-col gap-5 hover:cursor-pointer mt-1">
@@ -12,6 +12,7 @@
         ></i>
         <transition name="fade">
           <h2
+            @click="openSidebars"
             v-show="sidebar"
             class="text-sm select-none hover:bg-neutral-800 rounded-md p-2"
           >
@@ -22,7 +23,7 @@
     </div>
 
     <div class="flex flex-col gap-5 mt-20">
-      <a
+      <NuxtLink
         :href="item.href"
         v-for="(item, idx) in linkItems"
         :key="idx"
@@ -42,7 +43,7 @@
             {{ item.label }}
           </h2>
         </transition>
-      </a>
+      </NuxtLink>
     </div>
 
     <button
@@ -68,24 +69,25 @@
 <script setup>
 import { ref } from "vue";
 import { logout } from "@/lib/auth";
+import { NuxtLink } from "#components";
 
 const sidebar = ref(false);
 
 const linkItems = [
   {
-    href: "/manage-user",
-    icon: "pi pi-search",
-    label: "Search",
+    href: "/",
+    icon: "pi pi-microsoft",
+    label: "Dashboard",
   },
   {
     href: "/manage-user",
     icon: "pi pi-plus",
-    label: "Add Product",
+    label: "Add User",
   },
   {
     href: "/manage-user",
-    icon: "pi pi-microsoft",
-    label: "Dashboard",
+    icon: "pi pi-search",
+    label: "Search",
   },
   {
     href: "/manage-user",
