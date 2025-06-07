@@ -9,6 +9,8 @@ export const registerUser = async (
   password: string,
   firstname: string,
   lastname: string,
+  address: string,
+  phone: string,
   role: string
 ) => {
   await connectToDatabase();
@@ -22,6 +24,8 @@ export const registerUser = async (
     password: hashed,
     firstname,
     lastname,
+    address,
+    phone,
     role,
   });
 
@@ -46,6 +50,8 @@ export const loginUser = async (
       userId: user._id,
       firstname: user.firstname,
       lastname: user.lastname,
+      address: user.address,
+      phone: user.phone,
       role: user.role,
     },
     useRuntimeConfig().JWT_SECRET,

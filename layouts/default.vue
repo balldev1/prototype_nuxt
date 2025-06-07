@@ -1,27 +1,18 @@
 <template>
-  <!-- <Button
-    label="Logout"
-    icon="pi pi-sign-out"
-    class="p-button-danger"
-    @click="handleLogout"
-  /> -->
-  <div class="fixed">
+  <div v-if="user" class="flex fixed text-white w-full">
     <SideBarCard />
-    <NuxtPage />
+    <div class="w-full">
+      <HeaderCard :user="user" />
+      <div class="p-5">
+        <NuxtPage :user="user" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { logout } from "@/lib/auth";
+import HeaderCard from "~/components/layout/HeaderCard.vue";
 import SideBarCard from "~/components/layout/SideBarCard.vue";
-
-const handleLogout = async () => {
-  try {
-    await logout();
-    window.location.reload();
-  } catch (error) {
-    console.error(error);
-    alert(error.message || "Logout failed");
-  }
-};
+import { currentUser } from "~/lib/decodeToken";
+const { user } = currentUser();
 </script>

@@ -9,7 +9,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
       if (to.path !== "/login") return navigateTo("/login");
       return;
     }
-    console.log("test");
     try {
       const jwt = await import("jsonwebtoken");
       jwt.verify(token, jwtSecret);
