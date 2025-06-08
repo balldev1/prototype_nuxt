@@ -1,11 +1,26 @@
 <template>
   <div class="bg-neutral-900 shadow-sm rounded-md flex flex-col gap-5 p-5">
-    <div class="flex items-center justify-center"><h2></h2></div>
-    <div>1</div>
+    <div class="grid grid-cols-3 items-center justify-center gap-5">
+      <TaskCard
+        icon="pi-telegram"
+        title="Task Repair"
+        status="Online"
+        total="10"
+      />
+      <TaskCard
+        icon="pi-android"
+        title="Task Technic"
+        status="Online"
+        total="10"
+      />
+      <TaskCard icon="pi-prime" title="Task User" status="Online" total="10" />
+    </div>
   </div>
 </template>
 
 <script setup>
+import TaskCard from "@/components/manage-user/TaskCard.vue";
+
 const props = defineProps({
   user: {
     type: Object,
