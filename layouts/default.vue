@@ -1,5 +1,5 @@
 <template>
-  <div v-if="user" class="flex fixed text-white w-full">
+  <div v-if="user" class="flex text-white w-full">
     <SideBarCard />
     <div class="w-full">
       <HeaderCard :user="user" />

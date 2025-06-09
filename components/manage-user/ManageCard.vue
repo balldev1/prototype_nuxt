@@ -15,11 +15,13 @@
       />
       <TaskCard icon="pi-prime" title="Task User" status="Online" total="10" />
     </div>
+    <TableCard />
   </div>
 </template>
 
 <script setup>
 import TaskCard from "@/components/manage-user/TaskCard.vue";
+import TableCard from "@/components/manage-user/TableCard.vue";
 
 const props = defineProps({
   user: {
