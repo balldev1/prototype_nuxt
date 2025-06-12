@@ -4,10 +4,47 @@ import { User } from "../models/User";
 import { connectToDatabase } from "../utils/mongo";
 import { H3Event, setCookie } from "h3";
 
-export const getAllUsers = async () => {
+export const getAllUsers = async ({
+  firstname,
+  lastname,
+  role,
+  page = 1,
+  limit = 10,
+}: {
+  firstname?: string;
+  lastname?: string;
+  role?: string;
+  page?: number;
+  limit?: number;
+}) => {
   await connectToDatabase();
 
-  return await User.find({}, { password: 0 });
+  const filter: any = {};
+
+  if (firstname) {
+    filter.firstname = { $regex: firstname, $options: "i" };
+  }
+  if (lastname) {
+    filter.lastname = { $regex: lastname, $options: "i" };
+  }
+  if (role) {
+    filter.role = role;
+  }
+
+  const skip = (page - 1) * limit;
+
+  const users = await User.find(filter, { password: 0 })
+    .skip(skip)
+    .limit(limit);
+
+  const total = await User.countDocuments(filter);
+
+  return {
+    users,
+    total,
+    page,
+    limit,
+  };
 };
 
 export const registerUser = async (

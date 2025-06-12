@@ -35,8 +35,23 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    const users = await getAllUsers();
-    return users;
+    const query = getQuery(event);
+
+    const firstname = query.firstname as string | undefined;
+    const lastname = query.lastname as string | undefined;
+    const role = query.role as string | undefined;
+    const page = parseInt(query.page as string) || 1;
+    const limit = parseInt(query.limit as string) || 10;
+
+    const result = await getAllUsers({
+      firstname,
+      lastname,
+      role,
+      page,
+      limit,
+    });
+
+    return result;
   } catch (error) {
     throw createError({
       statusCode: 401,

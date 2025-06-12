@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-neutral-900 shadow-sm rounded-md h-[36rem] flex">
+  <div class="bg-neutral-900 shadow-sm rounded-md h-[36rem] flex w-full">
     <div class="flex w-full">
       <img
         src="/dashboard_bg.webp"

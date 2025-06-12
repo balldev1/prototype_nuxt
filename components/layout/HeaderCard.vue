@@ -1,5 +1,5 @@
 <template>
-  <div class="py-1 bg-neutral-900 flex text-sm mt-1">
+  <div class="py-1 bg-neutral-900 flex text-sm">
     <div class="flex items-center justify-between w-full">
       <div class="w-full flex">
         <h2 class="flex hover:bg-neutral-800 rounded-md p-2">

@@ -1,5 +1,5 @@
 <template>
-  <ManageCard />
+  <ManageCard v-if="user" />
 </template>
 
 <script setup>

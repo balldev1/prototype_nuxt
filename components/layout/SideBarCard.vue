@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-neutral-900 min-h-screen p-2 px-5 shadow transition-all ease-in-out duration-300"
+    class="bg-neutral-900 fixed min-h-screen p-2 px-5 shadow transition-all ease-in-out duration-300 z-50"
     :class="sidebar ? 'w-60' : ''"
   >
     <div class="flex flex-col gap-5 hover:cursor-pointer mt-1">
@@ -27,11 +27,11 @@
         :href="item.href"
         v-for="(item, idx) in linkItems"
         :key="idx"
-        class="flex items-center gap-2"
+        class="flex items-center gap-4 h-10"
       >
         <i
           :class="
-            item.icon + ' text-neutral-300 hover:bg-neutral-800 rounded-md p-2'
+            item.icon + '  text-neutral-300 hover:bg-neutral-800 rounded-md p-2'
           "
           style="font-size: 1.2rem"
         ></i>
@@ -70,6 +70,8 @@
 import { ref } from "vue";
 import { logout } from "@/lib/auth";
 import { NuxtLink } from "#components";
+
+const emit = defineEmits(["toggleSidebar"]);
 
 const sidebar = ref(false);
 
@@ -113,6 +115,8 @@ const linkItems = [
 
 const openSidebars = () => {
   sidebar.value = !sidebar.value;
+
+  emit("toggleSidebar", sidebar.value);
 };
 
 const handleLogout = async () => {
