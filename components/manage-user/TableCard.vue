@@ -92,13 +92,19 @@
       <Column field="lastname" header="Last Name" />
       <Column field="address" header="Address" />
       <Column field="role" header="Role" />
-      <Column header="Actions">
-        <template #body="slotProps">
+      <Column header="Actions" class="flex gap-5">
+        <template #body="slotProps" class="">
           <button
-            @click="handleAction(slotProps.data._id)"
-            class="hover:cursor-pointer hover:bg-neutral-700 bg-neutral-800 text-neutral-200 text-sm font-semibold rounded-md p-2"
+            @click="handleView(slotProps.data._id)"
+            class="cursor-pointer hover:bg-neutral-700 bg-neutral-800 text-neutral-200 text-sm font-semibold rounded-md p-2"
           >
             View
+          </button>
+          <button
+            @click="handleDelete(slotProps.data._id)"
+            class="cursor-pointer hover:bg-neutral-700 bg-neutral-800 text-neutral-200 text-sm font-semibold rounded-md p-2"
+          >
+            Delete
           </button>
         </template>
       </Column>
@@ -117,7 +123,9 @@
 <script setup>
 import { onMounted, ref, computed } from "vue";
 import { useRouter } from "vue-router";
-import { getUser } from "@/lib/user";
+import { getUser, deleteUser } from "@/lib/user";
+
+import Swal from "sweetalert2";
 import Select from "primevue/select";
 
 const firstname = ref("");
@@ -192,7 +200,35 @@ const goToPage = (newPage) => {
   });
 };
 
-const handleAction = (id) => {
+const handleView = (id) => {
   router.push(`/manage-user/${id}`);
+};
+
+const handleDelete = async (id) => {
+  const result = await Swal.fire({
+    title: "คุณแน่ใจหรือไม่?",
+    text: "คุณจะไม่สามารถย้อนกลับได้!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "ใช่, ลบเลย!",
+    cancelButtonText: "ยกเลิก",
+  });
+
+  if (result.isConfirmed) {
+    try {
+      const res = await deleteUser(id);
+
+      Swal.fire("ลบแล้ว!", "ข้อมูลถูกลบเรียบร้อยแล้ว", "success");
+      fetchUsers();
+    } catch (error) {
+      Swal.fire(
+        "ผิดพลาด!",
+        error.message || "เกิดข้อผิดพลาดในการลบข้อมูล",
+        "error"
+      );
+    }
+  }
 };
 </script>

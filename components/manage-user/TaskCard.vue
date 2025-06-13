@@ -8,7 +8,7 @@
     <div class="flex flex-col gap-5">
       <div class="flex items-center gap-2">
         <h2 class="text-2xl text-neutral-200 font-semibold">{{ title }}</h2>
-        <span class="bg-lime-400 text-black px-1 py-1 text-sm rounded-md">
+        <span class="bg-lime-400 text-black px-2 p-1 text-sm rounded-md">
           {{ status }}
         </span>
       </div>

@@ -4,6 +4,14 @@ import { User } from "../models/User";
 import { connectToDatabase } from "../utils/mongo";
 import { H3Event, setCookie } from "h3";
 
+export const getUserById = async (id: string) => {
+  await connectToDatabase();
+
+  const user = await User.findById(id).select("-password");
+
+  return user;
+};
+
 export const getAllUsers = async ({
   firstname,
   lastname,

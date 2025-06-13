@@ -1,13 +1,19 @@
 <template>
-  <div class="bg-neutral-900 shadow-sm rounded-md h-[36rem] flex w-full">
+  <div
+    class="relative bg-neutral-900 shadow-sm rounded-md h-[36rem] flex w-full"
+  >
+    <div class="absolute top-5 left-5">
+      <BreadcrumbCard :home="home" :items="items" />
+    </div>
+
     <div class="flex w-full">
       <img
         src="/dashboard_bg.webp"
         alt="Dashboard Background"
-        class="scale-80"
+        class="scale-70"
       />
     </div>
-    <div class="flex flex-col gap-3 w-full pt-10 pr-10">
+    <div class="flex flex-col gap-3 w-full pt-20 pr-10">
       <h2 class="text-4xl flex">Repair Notification and Maintenance</h2>
       <h2 class="border-[1px]" />
       <h2 class="text-balance">
@@ -28,11 +34,22 @@
 </template>
 
 <script setup>
+import { ref, computed } from "vue";
+
+import BreadcrumbCard from "@/components/layout/BreadcrumbCard.vue";
 import ContactCard from "@/components/home/ContactCard.vue";
+
 const props = defineProps({
   user: {
     type: Object,
     default: () => null,
   },
 });
+
+const home = ref({
+  icon: "pi pi-home",
+  route: "/",
+});
+
+const items = computed(() => [{ label: "about", route: `/` }]);
 </script>

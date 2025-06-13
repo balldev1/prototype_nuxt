@@ -2,6 +2,7 @@
   <div
     class="bg-neutral-900 shadow-sm rounded-md flex flex-col gap-5 p-5 mr-18"
   >
+    <BreadcrumbCard :home="home" :items="items" />
     <div class="grid grid-cols-3 items-center justify-center gap-5">
       <TaskCard
         icon="pi-telegram"
@@ -22,8 +23,11 @@
 </template>
 
 <script setup>
+import { ref, computed } from "vue";
+
 import TaskCard from "@/components/manage-user/TaskCard.vue";
 import TableCard from "@/components/manage-user/TableCard.vue";
+import BreadcrumbCard from "@/components/layout/BreadcrumbCard.vue";
 
 const props = defineProps({
   user: {
@@ -31,4 +35,10 @@ const props = defineProps({
     default: () => null,
   },
 });
+
+const home = ref({
+  icon: "pi pi-home",
+  route: "/",
+});
+const items = computed(() => [{ label: "manage-user", route: `/manage-user` }]);
 </script>
