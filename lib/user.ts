@@ -34,7 +34,6 @@ export const getUser = async (filters = {}) => {
 
 export const patchUser = async (id: string, updateData: any) => {
   try {
-    console.log("test");
     const response = await axios.patch(
       `${import.meta.env.VITE_API_BASE_URL}/auth/${id}`,
       updateData,
