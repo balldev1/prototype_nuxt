@@ -32,6 +32,23 @@ export const getUser = async (filters = {}) => {
   }
 };
 
+export const patchUser = async (id: string, updateData: any) => {
+  try {
+    console.log("test");
+    const response = await axios.patch(
+      `${import.meta.env.VITE_API_BASE_URL}/auth/${id}`,
+      updateData,
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Get User error:", error);
+    throw new Error("Get User failed");
+  }
+};
+
 export const deleteUser = async (id: string) => {
   try {
     const response = await axios.delete(

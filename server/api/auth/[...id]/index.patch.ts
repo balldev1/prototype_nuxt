@@ -26,6 +26,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const id = event.context.params?.id;
+  const body = await readBody(event);
 
   if (!id) {
     throw createError({
@@ -44,7 +45,6 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    const body = await readBody(event);
     return await updateUser(id, body);
   } catch (error) {
     throw createError({

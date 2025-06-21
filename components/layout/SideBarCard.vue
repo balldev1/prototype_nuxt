@@ -54,7 +54,7 @@
         class="pi pi-sign-out hover:bg-neutral-800 rounded-md p-2"
         style="font-size: 1.5rem"
       ></i>
-      <transition name="fade">
+      <transition name="fade" class="">
         <h2
           v-show="sidebar"
           class="text-sm select-none hover:bg-neutral-800 rounded-md p-2"

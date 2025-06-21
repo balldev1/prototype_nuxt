@@ -21,11 +21,13 @@
         </span>
         <div class="flex ml-auto gap-2">
           <button
+            @click="handleEditUser(id)"
             class="cursor-pointer px-4 bg-neutral-900 hover:bg-neutral-700 text-neutral-200 text-sm font-semibold rounded-md p-2"
           >
-            Edit
+            Confirm Edit
           </button>
           <button
+            @click="handleDeleteUser(id)"
             class="cursor-pointer px-4 bg-neutral-900 hover:bg-neutral-700 text-neutral-200 text-sm font-semibold rounded-md p-2"
           >
             Delete
@@ -104,7 +106,8 @@
 <script setup>
 import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
-
+import { deleteUser, patchUser } from "@/lib/user";
+import Swal from "sweetalert2";
 const route = useRoute();
 const rawId = route.params.id;
 const id = Array.isArray(rawId) ? rawId[0] : rawId;
@@ -126,23 +129,96 @@ const role = ref(props.role);
 const email = ref(props.email);
 const phone = ref(props.phone);
 
+const handleEditUser = async (id) => {
+  const updateData = {
+    firstname: firstname.value,
+    lastname: lastname.value,
+    address: address.value,
+    role: role.value,
+    email: email.value,
+    phone: phone.value,
+  };
+
+  const result = await Swal.fire({
+    title: "คุณต้องการแก้ไขหรือไม่?",
+    text: "คุณจะไม่สามารถย้อนกลับได้!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "ใช่, แก้ไขเลย!",
+    cancelButtonText: "ยกเลิก",
+  });
+
+  if (result.isConfirmed) {
+    try {
+      const response = await patchUser(id, updateData);
+      console.log("User updated:", response);
+
+      if (response.error) {
+        await Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด",
+          text: response.error,
+        });
+      } else {
+        await Swal.fire({
+          icon: "success",
+          title: "แก้ไขข้อมูลสำเร็จ",
+          text: "ข้อมูลผู้ใช้ถูกอัปเดตเรียบร้อยแล้ว",
+        });
+      }
+    } catch (err) {
+      console.error("Error updating user:", err);
+      await Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด",
+        text: "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้",
+      });
+    }
+  }
+};
+
+const handleDeleteUser = async (id) => {
+  const result = await Swal.fire({
+    title: "คุณแน่ใจหรือไม่?",
+    text: "คุณจะไม่สามารถย้อนกลับได้!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "ใช่, ลบเลย!",
+    cancelButtonText: "ยกเลิก",
+  });
+
+  if (result.isConfirmed) {
+    await deleteUser(id);
+    Swal.fire({
+      title: "Good job!",
+      text: "You delete success!",
+      icon: "success",
+    });
+    await navigateTo("/manage-user");
+  }
+};
+
 // ✅ log ทุกค่าทันทีเมื่อมีการเปลี่ยนแปลง
-watch(firstname, (val) => {
-  console.log("Firstname changed to:", val);
-});
-watch(lastname, (val) => {
-  console.log("Lastname changed to:", val);
-});
-watch(address, (val) => {
-  console.log("Address changed to:", val);
-});
-watch(role, (val) => {
-  console.log("Role changed to:", val);
-});
-watch(email, (val) => {
-  console.log("Email changed to:", val);
-});
-watch(phone, (val) => {
-  console.log("Phone changed to:", val);
-});
+// watch(firstname, (val) => {
+//   console.log("Firstname changed to:", val);
+// });
+// watch(lastname, (val) => {
+//   console.log("Lastname changed to:", val);
+// });
+// watch(address, (val) => {
+//   console.log("Address changed to:", val);
+// });
+// watch(role, (val) => {
+//   console.log("Role changed to:", val);
+// });
+// watch(email, (val) => {
+//   console.log("Email changed to:", val);
+// });
+// watch(phone, (val) => {
+//   console.log("Phone changed to:", val);
+// });
 </script>
